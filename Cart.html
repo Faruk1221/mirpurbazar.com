@@ -1,1 +1,567 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Machinery Shop</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        header {
+            background: white;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            color: #16a34a;
+            font-size: 21px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .cart {
+            font-size: 23px;
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #ef4444;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        .main-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .back {
+            display: inline-block;
+            margin: 15px 0;
+            color: #16a34a;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .cart-title {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .cart-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .cart-layout {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+            #cart-items {
+                flex: 1.8;
+            }
+            .cart-summary {
+                flex: 1.2;
+                position: sticky;
+                top: 80px;
+            }
+        }
+
+        #cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cart-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .cart-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cart-item-img {
+            width: 65px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+
+        .cart-item-info h3 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-info p {
+            color: #16a34a;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        .qty-controls button {
+            width: 30px;
+            height: 30px;
+            background: #f3f4f6;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .qty-controls span {
+            width: 32px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .remove-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .cart-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Customer Form Styles */
+        .customer-form {
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 15px;
+        }
+
+        .customer-form h4 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #4b5563;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 9px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #16a34a;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .cart-total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #16a34a;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 14px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .whatsapp-btn {
+            width: 100%;
+            padding: 14px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .empty-cart {
+            background: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .empty-cart h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #4b5563;
+        }
+
+        .empty-cart a {
+            display: inline-block;
+            margin-top: 15px;
+            background: #16a34a;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 25px 15px;
+            background: #1f2937;
+            color: white;
+            text-align: center;
+        }
+
+        footer p {
+            margin-top: 7px;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="top">
+        <a href="index.html" class="logo">⚙️ Machinery Shop</a>
+        <a href="cart.html" class="cart">
+            🛒 <span id="cart-count" class="cart-count">0</span>
+        </a>
+    </div>
+</header>
+
+<div class="main-wrapper">
+    <a href="index.html" class="back">← Continue Shopping</a>
+
+    <h2 class="cart-title">🛒 আপনার Shopping Cart</h2>
+
+    <div class="cart-layout">
+        <div id="cart-items"></div>
+
+        <div class="cart-summary" id="cart-summary">
+            <!-- Customer Info Form -->
+            <div class="customer-form">
+                <h4>📋 ডেলিভারি তথ্য</h4>
+                <div class="form-group">
+                    <label for="cust-name">আপনার নাম *</label>
+                    <input type="text" id="cust-name" placeholder="যেমন: মোঃ রফিকুল ইসলাম">
+                </div>
+                <div class="form-group">
+                    <label for="cust-phone">মোবাইল নম্বর *</label>
+                    <input type="tel" id="cust-phone" placeholder="যেমন: 01700000000">
+                </div>
+                <div class="form-group">
+                    <label for="cust-address">পূর্ণাঙ্গ ঠিকানা *</label>
+                    <textarea id="cust-address" rows="2" placeholder="বাড়ি/রোড নম্বর, এলাকা, থানা, জেলা"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="delivery-location">ডেলিভারি এলাকা *</label>
+                    <select id="delivery-location" onchange="updateTotalWithDelivery()">
+                        <option value="60">ঢাকার ভেতরে (৳60)</option>
+                        <option value="120">ঢাকার বাইরে (৳120)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="summary-row">
+                <span>উপমোট (Subtotal):</span>
+                <span id="subtotal-price">৳ 0</span>
+            </div>
+            <div class="summary-row">
+                <span>ডেলিভারি চার্জ:</span>
+                <span id="delivery-charge-text">৳ 60</span>
+            </div>
+            <div class="summary-row cart-total">
+                <span>সর্বমোট:</span>
+                <span id="cart-total">৳ 0</span>
+            </div>
+
+            <button class="checkout-btn" onclick="proceedToCheckout()">
+                Proceed to Checkout ➔
+            </button>
+
+            <button class="whatsapp-btn" onclick="sendOrderToWhatsApp()">
+                💬 WhatsApp-এ অর্ডার করুন
+            </button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <h3>Machinery Shop</h3>
+    <p>আপনার ব্যবসার প্রয়োজনীয় মেশিন এক জায়গায়</p>
+    <p>🚚 সারা বাংলাদেশে Delivery</p>
+</footer>
+
+<script>
+let currentSubtotal = 0;
+
+function renderCartPage() {
+    const itemsContainer = document.getElementById("cart-items");
+    const summaryContainer = document.getElementById("cart-summary");
+    const cartCountEl = document.getElementById("cart-count");
+
+    let cart = [];
+    try {
+        cart = JSON.parse(localStorage.getItem("cart")) || JSON.parse(localStorage.getItem("machinery_cart")) || [];
+    } catch (e) {
+        cart = [];
+    }
+
+    const totalQty = cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+    if (cartCountEl) cartCountEl.innerText = totalQty;
+
+    if (!cart || cart.length === 0) {
+        if (itemsContainer) {
+            itemsContainer.innerHTML = `
+                <div class="empty-cart">
+                    <h3>আপনার কার্ট বর্তমানে খালি!</h3>
+                    <p>পছন্দের প্রোডাক্ট যোগ করতে শপে যান।</p>
+                    <a href="index.html">কেনাকাটা শুরু করুন</a>
+                </div>`;
+        }
+        if (summaryContainer) summaryContainer.style.display = "none";
+        return;
+    }
+
+    if (summaryContainer) summaryContainer.style.display = "block";
+
+    currentSubtotal = 0;
+    if (itemsContainer) {
+        itemsContainer.innerHTML = cart.map((item, index) => {
+            const qty = Number(item.quantity) || 1;
+            const price = Number(item.price) || 0;
+            const itemTotal = price * qty;
+            currentSubtotal += itemTotal;
+            const imgSrc = item.image || 'https://via.placeholder.com/65';
+
+            return `
+                <div class="cart-item">
+                    <div class="cart-item-left">
+                        <img src="${imgSrc}" alt="${item.name || 'Product'}" class="cart-item-img">
+                        <div class="cart-item-info">
+                            <h3>${item.name || 'Product'}</h3>
+                            <p>৳ ${price.toLocaleString()} ${qty > 1 ? 'x ' + qty : ''}</p>
+                        </div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <div class="qty-controls">
+                            <button onclick="updateItemQuantity(${index}, -1)">−</button>
+                            <span>${qty}</span>
+                            <button onclick="updateItemQuantity(${index}, 1)">+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeItemFromCart(${index})">🗑️ ডিলিট</button>
+                    </div>
+                </div>`;
+        }).join("");
+    }
+
+    updateTotalWithDelivery();
+}
+
+function updateTotalWithDelivery() {
+    const subtotalElement = document.getElementById("subtotal-price");
+    const totalElement = document.getElementById("cart-total");
+    const deliveryChargeText = document.getElementById("delivery-charge-text");
+    const deliverySelect = document.getElementById("delivery-location");
+
+    const deliveryCharge = Number(deliverySelect ? deliverySelect.value : 60);
+    const grandTotal = currentSubtotal + deliveryCharge;
+
+    if (subtotalElement) subtotalElement.innerText = "৳ " + currentSubtotal.toLocaleString();
+    if (deliveryChargeText) deliveryChargeText.innerText = "৳ " + deliveryCharge.toLocaleString();
+    if (totalElement) totalElement.innerText = "৳ " + grandTotal.toLocaleString();
+}
+
+function updateItemQuantity(index, change) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (!cart[index]) return;
+
+    cart[index].quantity = (Number(cart[index].quantity) || 1) + change;
+
+    if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("machinery_cart", JSON.stringify(cart));
+    renderCartPage();
+}
+
+function removeItemFromCart(index) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("machinery_cart", JSON.stringify(cart));
+    renderCartPage();
+}
+
+function proceedToCheckout() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart.length === 0) {
+        alert("আপনার কার্ট খালি!");
+        return;
+    }
+    
+    // ফর্মের ডাটাগুলো সেভ করে Checkout-এ পাঠানো যাবে
+    const customerInfo = {
+        name: document.getElementById("cust-name").value,
+        phone: document.getElementById("cust-phone").value,
+        address: document.getElementById("cust-address").value,
+        deliveryCharge: document.getElementById("delivery-location").value
+    };
+    localStorage.setItem("checkout_customer_info", JSON.stringify(customerInfo));
+
+    window.location.href = "checkout.html";
+}
+
+function sendOrderToWhatsApp() {
+    const phoneNumber = "8801973317146"; 
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart.length === 0) {
+        alert("আপনার কার্ট খালি!");
+        return;
+    }
+
+    const name = document.getElementById("cust-name").value.trim();
+    const phone = document.getElementById("cust-phone").value.trim();
+    const address = document.getElementById("cust-address").value.trim();
+    const deliveryCharge = Number(document.getElementById("delivery-location").value);
+
+    if (!name || !phone || !address) {
+        alert("দয়া করে আপনার নাম, মোবাইল নম্বর এবং ঠিকানা পূরণ করুন!");
+        return;
+    }
+
+    let productListText = "";
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        let qty = Number(item.quantity) || 1;
+        let price = Number(item.price) || 0;
+        let itemTotal = price * qty;
+        total += itemTotal;
+        productListText += `${index + 1}. ${item.name} - ${qty}টি (৳${itemTotal.toLocaleString()})\n`;
+    });
+
+    let grandTotal = total + deliveryCharge;
+
+    let message = `🛒 *নতুন অর্ডার এসেছে!*\n\n` +
+                  `👤 *কাস্টমার তথ্য:*\n` +
+                  `• নাম: ${name}\n` +
+                  `• ফোন: ${phone}\n` +
+                  `• ঠিকানা: ${address}\n\n` +
+                  `📦 *প্রোডাক্টের তালিকা:*\n${productListText}\n` +
+                  `💵 উপমোট: ৳${total.toLocaleString()}\n` +
+                  `🚚 ডেলিভারি চার্জ: ৳${deliveryCharge}\n` +
+                  `💰 *সর্বমোট:* ৳${grandTotal.toLocaleString()}`;
+
+    let whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappURL, '_blank');
+}
+
+document.addEventListener("DOMContentLoaded", renderCartPage);
+</script>
+</body>
+</html>
