@@ -1,1 +1,816 @@
+<!DOCTYPE html>
+<html lang="bn">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machinery Shop | Business Machinery</title>
+    
+    <!-- External CSS (যদি থাকে) -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f7f9;
+            color: #172033;
+            padding-bottom: 85px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #ffffff;
+            padding: 14px 15px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .top-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #16a34a;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: #ecfdf3;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #e5e7eb;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .header-btn .cart-badge-header {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #dc2626;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-box {
+            display: flex;
+            margin-top: 13px;
+            background: #f3f4f6;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .search-box input {
+            flex: 1;
+            min-width: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 13px;
+            font-size: 14px;
+        }
+
+        .search-box button {
+            width: 52px;
+            border: none;
+            background: #16a34a;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           CATEGORIES
+        ========================= */
+
+        .categories-wrapper {
+            background: white;
+            padding: 14px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .categories {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 0 15px;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category {
+            min-width: 82px;
+            text-align: center;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .category-icon {
+            width: 58px;
+            height: 58px;
+            margin: auto;
+            border-radius: 14px;
+            background: #f0fdf4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            border: 1px solid #dcfce7;
+        }
+
+        .category-name {
+            margin-top: 7px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            margin: 15px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #14532d, #16a34a);
+            color: white;
+            min-height: 210px;
+            position: relative;
+        }
+
+        .hero-content {
+            padding: 28px 20px;
+            max-width: 78%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-small {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            opacity: .9;
+        }
+
+        .hero h1 {
+            font-size: 25px;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 13px;
+            line-height: 1.5;
+            opacity: .95;
+            margin-bottom: 17px;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background: white;
+            color: #15803d;
+            padding: 10px 17px;
+            border-radius: 7px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .hero-machine {
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+            font-size: 90px;
+            opacity: .22;
+        }
+
+        /* =========================
+           SECTIONS
+        ========================= */
+
+        .section {
+            padding: 5px 15px 15px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0 13px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .section-subtitle {
+            font-size: 12px;
+            color: #16a34a;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .feature {
+            background: white;
+            border-radius: 10px;
+            padding: 12px 5px;
+            text-align: center;
+            border: 1px solid #eeeeee;
+        }
+
+        .feature-icon {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .feature strong {
+            display: block;
+            font-size: 11px;
+        }
+
+        .feature span {
+            display: block;
+            font-size: 9px;
+            color: #777;
+            margin-top: 3px;
+        }
+
+        /* =========================
+           PRODUCTS
+        ========================= */
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #eeeeee;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-image {
+            height: 155px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .offer {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #dc2626;
+            color: white;
+            padding: 4px 7px;
+            border-radius: 5px;
+            font-size: 9px;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .product-info {
+            padding: 11px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .product h3 {
+            font-size: 14px;
+            line-height: 1.4;
+            min-height: 39px;
+        }
+
+        .rating {
+            color: #f59e0b;
+            font-size: 11px;
+            margin: 6px 0;
+        }
+
+        .price {
+            color: #16a34a;
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .old-price {
+            color: #999;
+            font-size: 11px;
+            text-decoration: line-through;
+            margin-top: 3px;
+        }
+
+        .view-product {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #16a34a;
+            color: white;
+            padding: 9px;
+            margin-top: 9px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* =========================
+           NO RESULT
+        ========================= */
+
+        .no-result {
+            grid-column: 1 / -1;
+            background: white;
+            padding: 30px 15px;
+            text-align: center;
+            border-radius: 12px;
+            color: #6b7280;
+        }
+
+        /* =========================
+           ABOUT
+        ========================= */
+
+        .about {
+            margin: 5px 15px 20px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 13px;
+            border: 1px solid #eeeeee;
+        }
+
+        .about h2 {
+            font-size: 19px;
+            margin-bottom: 9px;
+        }
+
+        .about p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           DRAWER (SIDE MENU & CART)
+        ========================= */
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            max-width: 85%;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.15);
+            z-index: 3000;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .drawer-header {
+            padding: 15px;
+            background: #16a34a;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .drawer-body {
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #172033;
+            color: white;
+            padding: 28px 15px;
+            text-align: center;
+        }
+
+        footer h3 {
+            color: #4ade80;
+            margin-bottom: 8px;
+        }
+
+        footer p {
+            color: #d1d5db;
+            font-size: 12px;
+            margin: 6px 0;
+        }
+
+        /* =========================
+           BOTTOM NAVIGATION
+        ========================= */
+
+        .bottom-nav {
+            position: fixed;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            height: 62px;
+            background: rgba(255, 255, 255, .97);
+            border: 1px solid #e5e7eb;
+            border-radius: 17px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, .15);
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            z-index: 2000;
+        }
+
+        .bottom-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 11px;
+            font-weight: 600;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .bottom-item span {
+            font-size: 21px;
+            margin-bottom: 2px;
+        }
+
+        .bottom-item.active {
+            color: #16a34a;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: 5px;
+            margin-left: 28px;
+            min-width: 17px;
+            height: 17px;
+            padding: 0 4px;
+            background: #dc2626;
+            color: white;
+            border-radius: 50%;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* =========================
+           DESKTOP
+        ========================= */
+
+        @media (min-width: 768px) {
+            header {
+                padding: 18px 7%;
+            }
+
+            .categories {
+                justify-content: center;
+            }
+
+            .hero {
+                max-width: 1100px;
+                margin: 25px auto;
+            }
+
+            .section,
+            .about {
+                max-width: 1100px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .products {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .bottom-nav {
+                max-width: 500px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="top-header">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">⚙️</div>
+                Machinery Shop
+            </a>
+
+            <div class="header-actions">
+                <button class="header-btn" onclick="toggleCartDrawer()" type="button" aria-label="Cart">
+                    🛒
+                    <span class="cart-badge-header" id="header-cart-count">0</span>
+                </button>
+                <button class="header-btn" onclick="toggleMenuDrawer()" type="button" aria-label="Menu">☰</button>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="আপনার প্রয়োজনীয় পণ্য বা মেশিন খুঁজুন..." autocomplete="off">
+            <button type="button" onclick="searchProducts()" aria-label="Search">🔍</button>
+        </div>
+    </header>
+
+    <!-- CATEGORIES -->
+    <div class="categories-wrapper">
+        <div class="categories">
+            <a href="#products" class="category" onclick="filterCategory('all')">
+                <div class="category-icon">📦</div>
+                <div class="category-name">সবগুলো</div>
+            </a>
+            <a href="#products" class="category" onclick="filterCategory('machinery')">
+                <div class="category-icon">⚙️</div>
+                <div class="category-name">Machinery</div>
+            </a>
+            <a href="#products" class="category" onclick="filterCategory('food')">
+                <div class="category-icon">🍔</div>
+                <div class="category-name">Food & Restaurant</div>
+            </a>
+            <a href="#products" class="category" onclick="filterCategory('home')">
+                <div class="category-icon">🏠</div>
+                <div class="category-name">Home</div>
+            </a>
+            <a href="#products" class="category" onclick="filterCategory('daily')">
+                <div class="category-icon">🛒</div>
+                <div class="category-name">Daily Need</div>
+            </a>
+            <a href="#products" class="category" onclick="filterCategory('fashion')">
+                <div class="category-icon">👕</div>
+                <div class="category-name">Fashion</div>
+            </a>
+            <a href="#products" class="category" onclick="filterCategory('health')">
+                <div class="category-icon">💊</div>
+                <div class="category-name">Health & Care</div>
+            </a>
+            <a href="#products" class="category" onclick="filterCategory('tools')">
+                <div class="category-icon">🔧</div>
+                <div class="category-name">Tools & Others</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- HERO BANNER -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-small">MACHINERY SHOP</div>
+            <h1>আপনার ব্যবসার মেশিন এক জায়গায়</h1>
+            <p>Quality Machinery • Best Price • Nationwide Delivery</p>
+            <a href="#products" class="hero-btn">Shop Now →</a>
+        </div>
+        <div class="hero-machine">⚙️</div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section">
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🚚</div>
+                <strong>Fast Delivery</strong>
+                <span>সারা বাংলাদেশ</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🛡️</div>
+                <strong>Quality Product</strong>
+                <span>Trusted Quality</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💰</div>
+                <strong>Best Price</strong>
+                <span>Affordable</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="section" id="products">
+        <div class="section-header">
+            <h2 class="section-title">🔥 জনপ্রিয় পণ্য</h2>
+            <span class="section-subtitle" onclick="showAllProducts()">View All →</span>
+        </div>
+
+        <div class="products" id="product-container">
+            <!-- JS থেকে ডায়নামিকালি লোড হবে -->
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about">
+        <h2>⚙️ Machinery Shop</h2>
+        <p>আপনার ব্যবসার প্রয়োজনীয় মেশিন এক জায়গায়। Quality Machinery, Best Price এবং সারা বাংলাদেশে Delivery সুবিধা।</p>
+    </section>
+
+    <!-- SIDEBAR MENU DRAWER -->
+    <div class="drawer" id="side-menu-drawer">
+        <div class="drawer-header">
+            <span>ক্যাটাগরি ও মেনু</span>
+            <button onclick="toggleMenuDrawer()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">✕</button>
+        </div>
+        <div class="drawer-body">
+            <h4 style="margin-bottom: 12px; color: #16a34a;">📂 ক্যাটাগরি সমূহ</h4>
+            <ul style="list-style: none; padding-left: 0; line-height: 2.2; font-size: 14px;">
+                <li><a href="#products" onclick="filterCategory('machinery'); toggleMenuDrawer();">⚙️ Machinery</a></li>
+                <li><a href="#products" onclick="filterCategory('food'); toggleMenuDrawer();">🍔 Food & Restaurant</a></li>
+                <li><a href="#products" onclick="filterCategory('home'); toggleMenuDrawer();">🏠 Home</a></li>
+                <li><a href="#products" onclick="filterCategory('daily'); toggleMenuDrawer();">🛒 Daily Need</a></li>
+                <li><a href="#products" onclick="filterCategory('fashion'); toggleMenuDrawer();">👕 Fashion</a></li>
+                <li><a href="#products" onclick="filterCategory('health'); toggleMenuDrawer();">💊 Health & Care</a></li>
+                <li><a href="#products" onclick="filterCategory('tools'); toggleMenuDrawer();">🔧 Tools & Others</a></li>
+            </ul>
+            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+            <h4 style="margin-bottom: 10px; color: #16a34a;">📞 Contact Us</h4>
+            <p style="font-size: 13px; color: #555; margin-bottom: 5px;"><strong>মোবাইল:</strong> +8801973317146</p>
+            <p style="font-size: 13px; color: #555; margin-bottom: 5px;"><strong>ইমেইল:</strong> contact@worldsbestmachinerybd.com</p>
+            <p style="font-size: 13px; color: #555;"><strong>📍 Business Location:</strong> কুষ্টিয়া, বাংলাদেশ</p>
+            <p style="font-size: 13px; color: #555;"><strong>📦 Product Sourcing:</strong> ঢাকা(নবাবপুর) ও যশোর (R.N. Road), বাংলাদেশ</p>
+            
+        </div>
+    </div>
+
+        <!-- CART DRAWER WITH "YOU MAY ALSO LIKE" -->
+    <div class="drawer" id="cart-drawer">
+        <div class="drawer-header">
+            <span>🛒 Shopping Cart</span>
+            <button onclick="toggleCartDrawer()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">✕</button>
+        </div>
+        <div class="drawer-body">
+            <div id="cart-drawer-items">
+                <!-- Cart Items ডাইনামিকালি লোড হবে -->
+            </div>
+
+            <div style="margin-top: 16px;">
+                <a href="cart.html" style="display: block; text-align: center; background: #16a34a; color: white; padding: 12px; border-radius: 8px; font-weight: bold;">Checkout Page →</a>
+            </div>
+
+            <hr style="margin: 18px 0; border: 0; border-top: 1px dashed #ccc;">
+
+            <!-- YOU MAY ALSO LIKE SECTION -->
+            <h4 style="font-size: 13px; color: #16a34a; margin-bottom: 10px; text-transform: uppercase;">You May Also Like</h4>
+            <div id="you-may-also-like-container">
+                <!-- দাম অনুযায়ী (কম থেকে বেশি) আইটেমগুলো লোড হবে -->
+            </div>
+        </div>
+    </div>
+    
+        <!-- ACCOUNT DRAWER -->
+    <div class="drawer" id="account-drawer">
+        <div class="drawer-header">
+            <span>👤 আমার একাউন্ট</span>
+            <button onclick="toggleAccountDrawer()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">✕</button>
+        </div>
+        <div class="drawer-body" id="account-drawer-body">
+            <!-- Profile form / summary + Order History এখানে JS দিয়ে লোড হবে -->
+        </div>
+    </div>
+    
+    <!-- FOOTER -->
+    <footer>
+        <h3>⚙️ Machinery Shop</h3>
+        <p>আপনার ব্যবসার প্রয়োজনীয় মেশিন এক জায়গায়</p>
+        <p>🚚 সারা বাংলাদেশে Delivery</p>
+        <p>📞 Contact: +8801973317146</p>
+        <p>© 2026 Machinery Shop</p>
+    </footer>
+    
+        <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-item active">
+            <span>🏠</span>
+            Home
+        </a>
+        <a href="javascript:void(0)" class="bottom-item" onclick="toggleMenuDrawer()">
+            <span>🛍️</span>
+            Shop
+        </a>
+        <a href="https://wa.me/8801973317146" target="_blank" class="bottom-item">
+            <span>📞</span>
+            Call
+        </a>
+        <a href="javascript:void(0)" class="bottom-item" onclick="toggleCartDrawer()">
+            <span>🛒</span>
+            <div class="cart-badge" id="cart-count">0</div>
+            Cart
+        </a>
+        <a href="javascript:void(0)" class="bottom-item" onclick="toggleAccountDrawer()">
+            <span>👤</span>
+            Account
+        </a>
+    </nav>
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+</body>
+
+                                                                                                                                       </html>
