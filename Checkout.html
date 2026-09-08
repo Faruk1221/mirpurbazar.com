@@ -1,1 +1,560 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Machinery Shop</title>
 
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        header {
+            background: white;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            color: #16a34a;
+            font-size: 21px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .cart {
+            font-size: 23px;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #ef4444;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        .main-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .back {
+            display: inline-block;
+            margin: 15px 0;
+            color: #16a34a;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .checkout-title {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .checkout-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .checkout-grid {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+            .checkout-form-container {
+                flex: 1.5;
+            }
+            .order-summary-container {
+                flex: 1;
+                position: sticky;
+                top: 80px;
+            }
+        }
+
+        .card-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .card-box h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #111827;
+            border-bottom: 1px solid #f3f4f6;
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            border-color: #16a34a;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .summary-item.total {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 12px;
+            margin-top: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #16a34a;
+        }
+
+        .order-items-list {
+            margin-bottom: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            border-bottom: 1px solid #f3f4f6;
+            padding-bottom: 10px;
+        }
+
+        .order-item-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #4b5563;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            padding: 14px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .place-order-btn:hover {
+            opacity: 0.9;
+        }
+
+        .success-box {
+            background: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .success-box h2 {
+            color: #16a34a;
+            margin-bottom: 10px;
+        }
+
+        /* Custom Popup Alert Styling */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .custom-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-modal-box {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            padding: 24px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .custom-modal-overlay.active .custom-modal-box {
+            transform: scale(1);
+        }
+
+        .custom-modal-header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #16a34a;
+            margin-bottom: 12px;
+        }
+
+        .custom-modal-body {
+            font-size: 15px;
+            color: #374151;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .custom-modal-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 25px 15px;
+            background: #1f2937;
+            color: white;
+            text-align: center;
+        }
+
+        footer p {
+            margin-top: 7px;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="top">
+        <a href="index.html" class="logo">⚙️ Machinery Shop</a>
+        <a href="cart.html" class="cart">
+            🛒 <span id="cart-count" class="cart-count">0</span>
+        </a>
+    </div>
+</header>
+
+<div class="main-wrapper">
+    <a href="cart.html" class="back">← Back to Cart</a>
+
+    <h2 class="checkout-title">📝 Checkout / অর্ডার সম্পন্ন করুন</h2>
+
+    <div id="checkout-content" class="checkout-grid">
+        <!-- Customer Details Form -->
+        <div class="checkout-form-container">
+            <div class="card-box">
+                <h3>শিপিং ঠিকানা ও তথ্য</h3>
+                <form id="checkout-form" onsubmit="handlePlaceOrder(event)">
+                    <div class="form-group">
+                        <label for="fullname">আপনার নাম *</label>
+                        <input type="text" id="fullname" placeholder="পুরো নাম লিখুন">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">মোবাইল নম্বর *</label>
+                        <input type="tel" id="phone" placeholder="০১৭xxxxxxxx">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area">ডেলিভারি এলাকা *</label>
+                        <select id="area" onchange="calculateCheckoutTotal()" required>
+                            <option value="inside">ঢাকার ভেতরে (৳ ৬০)</option>
+                            <option value="outside">ঢাকার বাইরে (৳ ১২০)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">সম্পূর্ণ ঠিকানা *</label>
+                        <textarea id="address" rows="3" placeholder="বাসা নম্বর, রোড নম্বর, এলাকা, থানা ও জেলা লিখুন"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">বিশেষ কোনো নির্দেশ (ঐচ্ছিক)</label>
+                        <input type="text" id="notes" placeholder="অর্ডার সম্পর্কিত কোনো নোট থাকলে দিন">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Order Summary Box -->
+        <div class="order-summary-container">
+            <div class="card-box">
+                <h3>অর্ডার বিবরণী</h3>
+                
+                <div id="order-items-summary" class="order-items-list">
+                    <!-- Items rendered dynamically -->
+                </div>
+
+                <div class="summary-item">
+                    <span>প্রোডাক্ট মোট:</span>
+                    <span id="subtotal">৳ 0</span>
+                </div>
+                <div class="summary-item">
+                    <span>ডেলিভারি চার্জ:</span>
+                    <span id="shipping-cost">৳ 60</span>
+                </div>
+
+                <div class="summary-item total">
+                    <span>সর্বমোট দেও:</span>
+                    <span id="grand-total">৳ 0</span>
+                </div>
+
+                <p style="font-size: 12px; color: #6b7280; margin-top: 10px;">
+                    💳 পেমেন্ট পদ্ধতি: Cash on Delivery (পণ্য বুঝে পেয়ে টাকা দিন)
+                </p>
+
+                <button type="submit" form="checkout-form" class="place-order-btn">
+                    অর্ডার কনফার্ম করুন ➔
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Popup Alert Modal -->
+<div id="customModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div class="custom-modal-header">
+            ⚙️ Machinery Shop
+        </div>
+        <div id="customModalMessage" class="custom-modal-body">
+            দয়া করে আপনার নাম, মোবাইল নম্বর এবং ঠিকানা পূরণ করুন!
+        </div>
+        <button class="custom-modal-btn" onclick="closeCustomModal()">ঠিক আছে</button>
+    </div>
+</div>
+
+<footer>
+    <h3>Machinery Shop</h3>
+    <p>আপনার ব্যবসার প্রয়োজনীয় মেশিন এক জায়গায়</p>
+    <p>🚚 সারা বাংলাদেশে Delivery</p>
+</footer>
+
+<script src="script.js"></script>
+<script>
+/* Custom Popup Alert Functions */
+function showCustomModal(message) {
+    document.getElementById("customModalMessage").innerText = message;
+    document.getElementById("customModal").classList.add("active");
+}
+
+function closeCustomModal() {
+    document.getElementById("customModal").classList.remove("active");
+}
+
+/* Checkout Logic */
+let cartSubtotal = 0;
+
+function updateHeaderCartCount(cart) {
+    const cartCountEl = document.getElementById("cart-count");
+    if (cartCountEl) {
+        const totalQty = cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+        cartCountEl.innerText = totalQty;
+    }
+}
+
+function initCheckout() {
+    let cart = [];
+    try {
+        cart = JSON.parse(localStorage.getItem("cart")) || JSON.parse(localStorage.getItem("machinery_cart")) || [];
+    } catch (e) {
+        cart = [];
+    }
+
+    const itemsSummary = document.getElementById("order-items-summary");
+
+    // Header Cart Count আপডেট
+    updateHeaderCartCount(cart);
+
+    // Auto-fill Customer Profile Info from LocalStorage or Cart Form
+    try {
+        const profile = JSON.parse(localStorage.getItem("customerProfile")) || JSON.parse(localStorage.getItem("checkout_customer_info"));
+        if (profile) {
+            if (profile.name) document.getElementById("fullname").value = profile.name;
+            if (profile.phone) document.getElementById("phone").value = profile.phone;
+            if (profile.address) document.getElementById("address").value = profile.address;
+            if (profile.deliveryCharge) {
+                const areaSelect = document.getElementById("area");
+                if(profile.deliveryCharge === "120") {
+                    areaSelect.value = "outside";
+                } else {
+                    areaSelect.value = "inside";
+                }
+            }
+        }
+    } catch (e) {}
+
+    if (cart.length === 0) {
+        window.location.href = "cart.html";
+        return;
+    }
+
+    cartSubtotal = 0;
+    itemsSummary.innerHTML = cart.map(item => {
+        const qty = Number(item.quantity) || 1;
+        const price = Number(item.price) || 0;
+        const itemTotal = price * qty;
+        cartSubtotal += itemTotal;
+
+        return `
+            <div class="order-item-row">
+                <span>${item.name || 'Product'} (x${qty})</span>
+                <span>৳ ${itemTotal.toLocaleString()}</span>
+            </div>`;
+    }).join("");
+
+    calculateCheckoutTotal();
+}
+
+function calculateCheckoutTotal() {
+    const areaSelect = document.getElementById("area");
+    const shippingCost = areaSelect.value === "outside" ? 120 : 60;
+    const grandTotal = cartSubtotal + shippingCost;
+
+    document.getElementById("subtotal").innerText = "৳ " + cartSubtotal.toLocaleString();
+    document.getElementById("shipping-cost").innerText = "৳ " + shippingCost.toLocaleString();
+    document.getElementById("grand-total").innerText = "৳ " + grandTotal.toLocaleString();
+}
+
+function handlePlaceOrder(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("fullname").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const areaSelectValue = document.getElementById("area").value;
+    const area = areaSelectValue === "outside" ? "ঢাকার বাইরে" : "ঢাকার ভেতরে";
+    const address = document.getElementById("address").value.trim();
+    const notes = document.getElementById("notes").value.trim();
+
+    // Validation Check for Custom Alert
+    if (!name || !phone || !address) {
+        showCustomModal("দয়া করে আপনার নাম, মোবাইল নম্বর এবং ঠিকানা পূরণ করুন!");
+        return;
+    }
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || JSON.parse(localStorage.getItem("machinery_cart")) || [];
+    const shippingCost = areaSelectValue === "outside" ? 120 : 60;
+    const grandTotal = cartSubtotal + shippingCost;
+
+    const orderId = "MS-" + Math.floor(100000 + Math.random() * 900000);
+
+    const orderData = {
+        orderId,
+        customer: { name, phone, area, address, notes },
+        items: cart,
+        subtotal: cartSubtotal,
+        shippingCost,
+        grandTotal,
+        date: new Date().toLocaleDateString("bn-BD")
+    };
+
+    // Save order history locally
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push(orderData);
+    localStorage.setItem("orders", JSON.stringify(orders));
+    
+    // Save Profile for auto-fill in future
+    localStorage.setItem("customerProfile", JSON.stringify({ name, phone, address }));
+
+    // Clear cart after placing order
+    localStorage.removeItem("cart");
+    localStorage.removeItem("machinery_cart");
+
+    // Display confirmation screen
+    showOrderSuccess(orderData);
+}
+
+function showOrderSuccess(order) {
+    const mainWrapper = document.getElementById("checkout-content");
+    
+    // Header cart count ০ করে দেওয়া
+    updateHeaderCartCount([]);
+
+    // WhatsApp Message
+    let itemDetails = order.items.map(i => `${i.name} (x${i.quantity || 1})`).join(", ");
+    let waMessage = `*NEW ORDER!*%0A*Order ID:* ${order.orderId}%0A*Name:* ${order.customer.name}%0A*Phone:* ${order.customer.phone}%0A*Items:* ${itemDetails}%0A*Total:* BDT ${order.grandTotal}%0A*Address:* ${order.customer.address}`;
+    
+    let adminPhone = "8801973317146"; 
+    let waUrl = `https://wa.me/${adminPhone}?text=${waMessage}`;
+
+    mainWrapper.innerHTML = `
+        <div class="success-box" style="width: 100%;">
+            <h2>🎉 আপনার অর্ডারটি সফলভাবে গৃহীত হয়েছে!</h2>
+            <p style="margin: 10px 0;">অর্ডার নম্বর: <strong>${order.orderId}</strong></p>
+            <p>আমাদের প্রতিনিধি খুব শীঘ্রই <strong>${order.customer.phone}</strong> নম্বরে কল করে অর্ডারটি নিশ্চিত করবেন।</p>
+            
+            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <a href="${waUrl}" target="_blank" style="background: #25D366; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold;">💬 WhatsApp-এ কনফার্ম করুন</a>
+                <a href="index.html" style="background: #16a34a; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold;">হোম পেজে ফিরে যান</a>
+            </div>
+        </div>`;
+}
+
+document.addEventListener("DOMContentLoaded", initCheckout);
+</script>
+</body>
+</html>
